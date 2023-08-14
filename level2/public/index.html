@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exactspace</title>
+</head>
+
+<style>
+
+    #display{
+        display: none;
+    }
+
+    #box{
+
+        display: flex;
+
+        margin: 50px;
+
+        justify-content: space-around;
+    }
+
+    #box2{
+
+       
+        padding: 30px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        width: 30%;
+
+    }
+
+    #submit_btn{
+        cursor: pointer;
+        padding: 5px 10px;
+        font-size: 20px;
+    }
+    #submit_btn:hover{
+        background-color: blue;
+        color: white;
+    }
+    
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+  }
+  
+ 
+  .styled-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  
+  .styled-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  
+  .styled-table td {
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  
+  .styled-table tbody tr:hover {
+    background-color: #f7f7f7;
+  }
+  
+  
+  .styled-table td:first-child {
+    width: 60px;
+  }
+  
+  
+  @media screen and (max-width: 768px) {
+    .styled-table {
+      border: 0;
+    }
+    .styled-table thead {
+      display: none;
+    }
+    .styled-table tbody, .styled-table tr, .styled-table td {
+      display: block;
+      width: 100%;
+    }
+    .styled-table td {
+      border-bottom: none;
+    }
+    .styled-table td:before {
+      content: attr(data-label);
+      font-weight: bold;
+      float: left;
+    }
+  }
+
+ 
+body, h1, h2, h3, ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  .navbar {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+  
+  .navbar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navbar-nav {
+    list-style: none;
+    display: flex;
+  }
+  
+  .nav-item {
+    margin-right: 20px;
+  }
+  
+  .nav-item:last-child {
+    margin-right: 0;
+  }
+  
+  .nav-item a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+  
+  .nav-item a:hover {
+    color: #ff9900;
+  }
+  
+  
+</style>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">Exactspace</div>
+        <ul class="navbar-nav">
+          <li class="nav-item"><a href="#">Home</a></li>
+          <li class="nav-item"><a href="#">About</a></li>
+          <li class="nav-item"><a href="#">Services</a></li>
+          <li class="nav-item"><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+
+    <div id="box">
+
+        <div id="box1">
+
+            <form action="" id="form">
+                <textarea name="input" id="input" cols="30" rows="10" placeholder="Enter in JSON format"></textarea>
+                <br>
+                <input type="submit" id="submit_btn">
+            </form>
+        </div>
+        <div id="box2">
+
+            <h1>JSON data...</h1>
+
+
+            <div id="display">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>S.no</th>
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body">
+                        
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+
+    const form = document.getElementById("form")
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault()
+
+        const input = document.getElementById("input").value
+
+        console.log(input)
+
+        try {
+
+            const parsedData = JSON.parse(input)
+
+            console.log(parsedData)
+
+            const res = await fetch("/post", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(parsedData)
+            })
+            const data = await res.json();
+
+            console.log(data)
+
+            if(typeof data =="object"){
+
+                displayJson(data)
+
+            }else{
+                alert("Data is not in JSON format")
+            }
+
+
+            
+        } catch (error) {
+            
+            alert("Data is not in JSON format")
+        }
+    })
+
+
+
+    function displayJson(data) {
+
+        const display = document.getElementById("display")
+        
+        display.style.display = "block"
+
+        
+
+        const table = document.getElementById("body")
+
+        table.innerHTML=""
+
+        for (let key in data) {
+
+            let count = 1
+
+
+            const row = `<tr>
+                <td>${count}</td>
+                <td>${key}</td>
+                <td>${data[key]}</td>
+            </tr>`;
+            table.insertAdjacentHTML('beforeend', row);
+            count++
+        }
+
+    }
+
+
+
+
+
+</script>
