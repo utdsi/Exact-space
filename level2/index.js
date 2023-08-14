@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(cors())
 
 
-port = process.env.port || 3000
+port = 3000
 
 
 app.use(express.static(__dirname + "/public"));
