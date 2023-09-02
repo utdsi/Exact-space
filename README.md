@@ -1,7 +1,6 @@
 # Exact-space
 
-## Level-1
-https://drive.google.com/file/d/1yySMdnJ1D_uvFeBexzE25KoQ98lgq-1s/view?usp=sharing
+
 
 ## Deployed Link
 https://test-hqoc.onrender.com/
