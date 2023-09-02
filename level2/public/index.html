@@ -12,6 +12,14 @@
     #display{
         display: none;
     }
+    #display3{
+      display: none;
+  }
+  #display4{
+    border: 1px solid black;
+    padding: 5px;
+    display: none;
+}
 
     #box{
 
@@ -30,6 +38,15 @@
         width: 30%;
 
     }
+    #box3{
+
+       
+      padding: 30px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      width: 30%;
+      border: 1px solid black;
+
+  }
 
     #submit_btn{
         cursor: pointer;
@@ -169,27 +186,24 @@ body, h1, h2, h3, ul, li {
         </div>
         <div id="box2">
 
-            <h1>JSON data...</h1>
+            <h1>LEVEL-2</h1>
 
 
-            <div id="display">
-                <table class="styled-table">
-                    <thead>
-                        <tr>
-                            <th>S.no</th>
-                            <th>Key</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody id="body">
-                        
-
-                    </tbody>
-
-
-                </table>
-            </div>
+            <p id="display">
+                
+            </p>
         </div>
+
+        <div id="box3">
+
+          <h1>LEVEL-3</h1>
+
+          <br>
+          <br>
+
+
+          <span id="display3"></span> <span id="display4"></span>
+      </div>
 
 
     </div>
@@ -207,13 +221,13 @@ body, h1, h2, h3, ul, li {
 
         const input = document.getElementById("input").value
 
-        console.log(input)
+        //console.log(input)
 
         try {
 
             const parsedData = JSON.parse(input)
 
-            console.log(parsedData)
+            //console.log(parsedData)
 
             const res = await fetch("/post", {
                 method: "POST",
@@ -224,11 +238,14 @@ body, h1, h2, h3, ul, li {
             })
             const data = await res.json();
 
-            console.log(data)
+            
+
+            //console.log(typeof data)
 
             if(typeof data =="object"){
 
                 displayJson(data)
+                displayBox3(data)
 
             }else{
                 alert("Data is not in JSON format")
@@ -237,8 +254,10 @@ body, h1, h2, h3, ul, li {
 
             
         } catch (error) {
+
+          console.log(error)
             
-            alert("Data is not in JSON format")
+            alert("something went wrong")
         }
     })
 
@@ -250,24 +269,36 @@ body, h1, h2, h3, ul, li {
         
         display.style.display = "block"
 
+        //console.log(typeof data)
+
+        for(let key in data){
+          const newData = key+":"+data[key]
+
+          display.innerHTML = newData
+        }
+
         
 
-        const table = document.getElementById("body")
+        
 
-        table.innerHTML=""
+        //display.innerHTML=`$`
 
-        for (let key in data) {
+    }
 
-            let count = 1
+    function displayBox3(data){
+      const display3 = document.getElementById("display3")
+      const display4 = document.getElementById("display4")
+        
+        display3.style.display = "block"
+        display4.style.display = "block"
 
+        //console.log(typeof data)
 
-            const row = `<tr>
-                <td>${count}</td>
-                <td>${key}</td>
-                <td>${data[key]}</td>
-            </tr>`;
-            table.insertAdjacentHTML('beforeend', row);
-            count++
+        for(let key in data){
+          
+
+          display3.innerText = key
+          display4.innerText = data[key]
         }
 
     }
